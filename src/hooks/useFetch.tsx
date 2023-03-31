@@ -11,12 +11,12 @@ export const useFetch = function (url: string) {
         setIsLoading(true);
         const res = await fetch(url);
         const json = await res.json();
-        setIsLoading(false);
         setData(json);
-      } catch (err) {
-        console.log(err);
-        setError('Could not fetch the data');
         setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+        setIsLoading(false);
+        setError('Could not fetch the data');
       }
     };
 
