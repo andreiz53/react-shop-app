@@ -1,6 +1,6 @@
 // import { useParams } from 'react-router-dom';
 
-import { useContext, useState } from 'react';
+import { createRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 
@@ -11,29 +11,28 @@ type Props = {
   price: number;
 };
 type Context = {
-  state?: any;
   dispatch?: any;
-};
-type Item = {
-  id: number;
 };
 
 function Product({ id, thumbnail, title, price }: Props) {
-  const {
-    state: { cart },
-    dispatch,
-  }: Context = useContext(ShopContext);
-  const [qty, setQty] = useState(1);
+  const { dispatch }: Context = useContext(ShopContext);
+  const qtyInput = createRef<HTMLInputElement>();
 
-  // const { id } = useParams();
+  function handleAddToCart(
+    prodId: number,
+    e: React.FormEvent<HTMLFormElement>
+  ) {
+    e.preventDefault();
 
-  function handleAddToCart(prodId: number) {
-    if (cart.some((item: Item) => item.id === prodId)) {
-      console.log('UPDATE CART ITEM');
-    } else {
+    if (Number(qtyInput.current?.value) > 0) {
       dispatch({
         type: 'ADD_TO_CART',
-        payload: { id: prodId, qty: qty },
+        payload: { id: prodId, qty: Number(qtyInput.current?.value) },
+      });
+    } else if (Number(qtyInput.current?.value) === 0) {
+      dispatch({
+        type: 'REMOVE_FROM_CART',
+        payload: prodId,
       });
     }
   }
@@ -49,21 +48,21 @@ function Product({ id, thumbnail, title, price }: Props) {
       <div className='product-price px-4 pb-4 text-green-700 font-semibold'>
         ${price}
       </div>
-      <div className='product-qty mx-4 mb-2 '>
-        <div className='text-s mb-2'>Quantity:</div>
-        <input
-          className='border-2 p-2 border-black border-solid rounded w-16'
-          type='number'
-          value={qty}
-          onChange={(e) => setQty(Number(e.target.value))}
-        />
-      </div>
-      <button
-        onClick={() => handleAddToCart(id)}
-        className='w-full text-center bg-indigo-500 text-white py-2'
-      >
-        Add to cart
-      </button>
+      <form onSubmit={(e) => handleAddToCart(id, e)}>
+        <div className='product-qty mx-4 mb-2 '>
+          <div className='text-s mb-2'>Quantity:</div>
+          <input
+            className='border-2 p-2 border-black border-solid rounded w-16'
+            type='number'
+            ref={qtyInput}
+            min='0'
+            placeholder='0'
+          />
+        </div>
+        <button className='w-full text-center bg-indigo-500 text-white py-2'>
+          Add to cart
+        </button>
+      </form>
     </li>
   );
 }

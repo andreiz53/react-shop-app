@@ -13,10 +13,13 @@ type Product = {
   title: string;
   qty: string;
 };
-
+type CartItem = {
+  id: number;
+  qty: number;
+};
 function CartItem({ id }: Props) {
   const {
-    state: { products },
+    state: { products, cart },
     dispatch,
   }: Context = useContext(ShopContext);
 
@@ -27,7 +30,10 @@ function CartItem({ id }: Props) {
         .map((prod: Product) => (
           <div key={prod.id}>
             <h3>{prod.title}</h3>
-            <p>Qty: {prod.qty}</p>
+            <p>
+              Qty:{' '}
+              {cart.filter((cartItem: CartItem) => cartItem.id === id)[0].qty}
+            </p>
           </div>
         ))}
     </div>
