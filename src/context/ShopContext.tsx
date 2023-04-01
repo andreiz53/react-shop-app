@@ -18,10 +18,13 @@ export function ShopProvider({ children }: any) {
       try {
         const res = await fetch('https://dummyjson.com/products?limit=10');
         const json = await res.json();
-        json.products.map((prod: any) => (prod.qty = 1));
+        json.products.map((prod: any) => (prod.qty = 0));
         dispatch({
-          type: 'INITIALIZE_CART',
-          payload: [...json.products],
+          type: 'INITIALIZE_SHOP',
+          payload: {
+            products: [...json.products],
+            cart: [],
+          },
         });
       } catch (err) {
         console.error(err);

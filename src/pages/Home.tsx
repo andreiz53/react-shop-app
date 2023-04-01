@@ -4,7 +4,6 @@ import Product from './Product';
 
 type Context = {
   state?: any;
-  dispatch?: any;
 };
 type Product = {
   title: string;
@@ -19,7 +18,6 @@ type Product = {
 function Home() {
   const {
     state: { products },
-    dispatch,
   }: Context = useContext(ShopContext);
 
   return (
@@ -32,7 +30,6 @@ function Home() {
             thumbnail={product.thumbnail}
             title={product.title}
             price={product.price}
-            dispatch={dispatch}
           />
         ))}
     </ul>

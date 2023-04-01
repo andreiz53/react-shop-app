@@ -1,26 +1,41 @@
 // import { useParams } from 'react-router-dom';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ShopContext } from '../context/ShopContext';
 
 type Props = {
   id: number;
   thumbnail: string;
   title: string;
   price: number;
-  dispatch: any;
+};
+type Context = {
+  state?: any;
+  dispatch?: any;
+};
+type Item = {
+  id: number;
 };
 
-function Product({ id, thumbnail, title, price, dispatch }: Props) {
-  const [qty, setQty] = useState('1');
+function Product({ id, thumbnail, title, price }: Props) {
+  const {
+    state: { cart },
+    dispatch,
+  }: Context = useContext(ShopContext);
+  const [qty, setQty] = useState(1);
 
   // const { id } = useParams();
 
   function handleAddToCart(prodId: number) {
-    dispatch({
-      type: 'ADD_TO_CART',
-      payload: { id: prodId, qty: qty },
-    });
+    if (cart.some((item: Item) => item.id === prodId)) {
+      console.log('UPDATE CART ITEM');
+    } else {
+      dispatch({
+        type: 'ADD_TO_CART',
+        payload: { id: prodId, qty: qty },
+      });
+    }
   }
 
   return (
@@ -40,7 +55,7 @@ function Product({ id, thumbnail, title, price, dispatch }: Props) {
           className='border-2 p-2 border-black border-solid rounded w-16'
           type='number'
           value={qty}
-          onChange={(e) => setQty(e.target.value)}
+          onChange={(e) => setQty(Number(e.target.value))}
         />
       </div>
       <button
