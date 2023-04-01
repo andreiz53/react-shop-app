@@ -38,28 +38,37 @@ function Product({ id, thumbnail, title, price }: Props) {
   }
 
   return (
-    <li className='product-single bg-white text-black'>
-      <div className='product-image'>
-        <Link to={`/products/${id}`} className=' block w-full h-full'>
-          <img src={thumbnail} alt={title} className='h-64 object-cover' />
+    <li className='product-single bg-indigo-50 text-[#10002b] rounded-xl  border border-gray-100/75'>
+      <div className='product-image rounded-t-xl'>
+        <Link
+          to={`/products/${id}`}
+          className='block w-full h-full rounded-t-xl'
+        >
+          <img
+            src={thumbnail}
+            alt={title}
+            className='h-64 object-cover rounded-t-xl'
+          />
         </Link>
       </div>
-      <div className='product-title px-4 pt-4 font-semibold'>{title}</div>
-      <div className='product-price px-4 pb-4 text-green-700 font-semibold'>
+      <div className='product-title px-4 pt-4 font-semibold text-l'>
+        <Link to={`/products/${id}`}>{title}</Link>
+      </div>
+      <div className='product-price px-4 pb-4 text-green-600 font-semibold'>
         ${price}
       </div>
       <form onSubmit={(e) => handleAddToCart(id, e)}>
         <div className='product-qty mx-4 mb-2 '>
-          <div className='text-s mb-2'>Quantity:</div>
+          <div className='text-xs font-semibold mb-1'>Quantity:</div>
           <input
-            className='border-2 p-2 border-black border-solid rounded w-16'
+            className='border-2 pl-2 py-0 border-black border-solid rounded w-16'
             type='number'
             ref={qtyInput}
             min='0'
             placeholder='0'
           />
         </div>
-        <button className='w-full text-center bg-indigo-500 text-white py-2'>
+        <button className='w-full text-center bg-[#10002b] text-white rounded-b-xl py-2'>
           Add to cart
         </button>
       </form>
