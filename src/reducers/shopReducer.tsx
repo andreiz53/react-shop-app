@@ -27,7 +27,7 @@ export const shopReducer = (state: any, action: any) => {
       } else {
         newCart = [...state.cart, action.payload];
       }
-
+      console.log(newCart);
       return {
         products: [...state.products],
         cart: newCart,
